@@ -1,0 +1,24 @@
+version: '3.6'
+services:
+  telegraf:
+    image: telegraf
+    container_name: telegraf
+    restart: unless-stopped
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /:/rootfs:ro
+      - /sys:/rootfs/sys:ro
+      - /proc:/rootfs/proc:ro
+      - /etc:/rootfs/etc:ro
+      - /run:/rootfs/run:ro
+    env_file:
+       - .env
+    environment:
+      - HOST_MOUNT_PREFIX=/rootfs
+      - HOST_SYS=/rootfs/sys
+      - HOST_PROC=/rootfs/proc
+      - HOST_ETC=/rootfs/etc
+      - HOST_RUN=/rootfs/run
+    ports:
+    - '8126:8125'

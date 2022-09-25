@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  gotify:
+    image: gotify/server
+    container_name: gotify
+    env_file:
+      - .env
+    ports:
+      - ${PORT}:80
+    volumes:
+      - "./gotify_data:/app/data"
+    restart: "unless-stopped"

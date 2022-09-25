@@ -1,0 +1,19 @@
+version: "3"
+services:
+  filebrowser:
+    image: filebrowser/filebrowser
+    container_name: filebrowser
+    env_file:
+       - .env
+    volumes:
+      - ${DATA_DIR}:/srv
+      - ./filebrowser.db:/database.db
+      - ./.filebrowser.json:/.filebrowser.json
+    ports:
+      - 8080:80
+    restart: unless-stopped
+    
+networks:
+  default:
+    external:
+      name: web

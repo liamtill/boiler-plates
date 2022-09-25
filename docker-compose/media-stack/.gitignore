@@ -1,0 +1,8 @@
+nzbget/
+nzbhydra/
+prowlarr/
+radarr/
+sonarr/
+bazarr/
+jellyseer/
+.env

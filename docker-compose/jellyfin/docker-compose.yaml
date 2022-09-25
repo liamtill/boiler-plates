@@ -1,0 +1,17 @@
+version: "3.5"
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    env_file:
+      - .env
+    user: ${PUID}:${PGID}
+    network_mode: "host"
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - ${DATA_ROOT}:/media
+    restart: "unless-stopped"
+    # Optional - alternative address used for autodiscovery
+    #environment:
+    #  - JELLYFIN_PublishedServerUrl=http://example.com

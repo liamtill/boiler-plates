@@ -1,0 +1,65 @@
+
+# Followed:  https://www.youtube.com/watch?v=NOWoLfpY2kE&t=986s
+# Based on Git repo
+# https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbmNyWUlNSmtiX0ljNXVTNjJuNHctTkk3ZkhsUXxBQ3Jtc0tsUlJGN09FSDlkVFJtRVNLbVM3d09mYmx2QVc2VHg2dVowVUJMU29ET3FiMVBZR3p1M01KS1dJSHU5WnBVWnZxMGRkRUdwNGRzX3RGNnRiekluUDVIUThMOGVNV1JrYW9kb1k4NWIyM3FHN091WXk4OA&q=https%3A%2F%2Fgithub.com%2Fshazforiot%2FHow-To-Setup-Influxdb-Telegraf-And-Grafana-using-Docker-Compose%2Ftree%2Fmain&v=NOWoLfpY2kE
+
+version: '3.6'
+services:
+  telegraf:
+    image: telegraf
+    container_name: telegraf
+    restart: unless-stopped
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /:/rootfs:ro
+      - /sys:/rootfs/sys:ro
+      - /proc:/rootfs/proc:ro
+      - /etc:/rootfs/etc:ro
+      - /run:/rootfs/run:ro
+    env_file:
+       - .env
+    environment:
+      - HOST_MOUNT_PREFIX=/rootfs
+      - HOST_SYS=/rootfs/sys
+      - HOST_PROC=/rootfs/proc
+      - HOST_ETC=/rootfs/etc
+      - HOST_RUN=/rootfs/run
+    depends_on:
+      - influxdb
+    links:
+      - influxdb
+    ports:
+    - '8125:8125'
+
+  influxdb:
+    image: influxdb:1.8-alpine
+    container_name: influxdb
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - '8086:8086'
+    volumes:
+      - influxdb_data:/var/lib/influxdb
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana-server
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+    env_file:
+      - .env
+    links:
+      - influxdb
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+      
+volumes:
+  grafana_data: {}
+  influxdb_data: {}
+
+

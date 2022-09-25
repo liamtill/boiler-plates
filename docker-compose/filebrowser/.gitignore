@@ -1,0 +1,4 @@
+srv/
+.filebrowser.json
+filebrowser.db
+.env

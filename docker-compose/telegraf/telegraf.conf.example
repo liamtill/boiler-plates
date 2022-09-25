@@ -1,0 +1,82 @@
+ # telegraf inputs reference
+ # https://github.com/influxdata/telegraf/tree/master/plugins/inputs
+ 
+ [global_tags]
+
+[agent]
+  interval = "60s"
+  round_interval = true
+  metric_batch_size = 1000
+  metric_buffer_limit = 10000
+  collection_jitter = "0s"
+  flush_interval = "10s"
+  flush_jitter = "0s"
+  precision = ""
+  hostname = "<HOSTNAME>"
+  omit_hostname = false
+
+[[outputs.influxdb]]
+  urls = ["http://<INFLUXHOST>:<PORT>"]
+  database = "influx"
+  timeout = "5s"
+  username = "telegraf"
+  password = "metricsmetricsmetricsmetrics"
+  ## Name of existing retention policy to write to.  Empty string writes to
+  ## the default retention policy.  Only takes effect when using HTTP.
+  # retention_policy = ""
+
+
+[[inputs.cpu]]
+  percpu = true
+  totalcpu = true
+  collect_cpu_time = false
+  report_active = false
+
+
+[[inputs.disk]]
+  ignore_fs = ["tmpfs", "devtmpfs", "devfs", "iso9660", "overlay", "aufs", "squashfs"]
+
+
+[[inputs.diskio]]
+
+[[inputs.kernel]]
+
+[[inputs.mem]]
+
+[[inputs.processes]]
+
+[[inputs.sensors]]
+
+[[inputs.swap]]
+
+[[inputs.system]]
+
+[[inputs.temp]]
+
+[[inputs.wireless]]
+
+[[inputs.netstat]]
+
+[[inputs.net]]
+
+[[inputs.bond]]
+
+[[inputs.docker]]
+  endpoint = "unix:///var/run/docker.sock"
+  #container_names = []
+  timeout = "5s"
+  perdevice = true
+  ## Whether to report for each container total blkio and network stats or not
+  total = false
+  ## docker labels to include and exclude as tags.  Globs accepted.
+  ## Note that an empty array for both will include all labels as tags
+  #docker_label_include = []
+  #docker_label_exclude = []
+
+  container_state_include = ["created", "restarting", "running", "removing", "paused", "exited", "dead"]
+
+[[inputs.docker_log]]
+  ## Docker Endpoint
+  ##   To use TCP, set endpoint = "tcp://[ip]:[port]"
+  ##   To use environment variables (ie, docker-machine), set endpoint = "ENV"
+  endpoint = "unix:///var/run/docker.sock"

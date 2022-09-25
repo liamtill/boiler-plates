@@ -1,0 +1,4 @@
+config/
+cache/
+media/
+.env
