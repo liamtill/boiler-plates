@@ -29,7 +29,7 @@ while read -r ct; do
         echo "Backing up" $ct
         # use rclone to backup service
         #success $(rclone sync $DOCKER_ROOT$ct $BACKUP_ROOT$ct)
-        success $(rclone copy $DOCKER_ROOT$ct $BACKUP_ROOT$ct)
+        success $(rclone sync --include ".*" $DOCKER_ROOT$ct $BACKUP_ROOT$ct)
         if [ $success -eq 0 ]; then
             echo "Backed up" $ct
             fail=0
