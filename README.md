@@ -34,6 +34,7 @@ Current listing of compose files:
     * For deploying to other servers
 * Uptime Kuma
 * Watchtower
+* PiHole
 
 ## `scripts/`
 
@@ -48,3 +49,7 @@ Contains various custom sccripts used for monitoring, backups etc. Will be added
 * Create required data/config directories for the container. These will be defined in the `.env` file.
 * Spin up container(s): `docker-compose up -d`
 * Go to `HOST:PORT` of container
+
+## Useful `.gitignore `templates
+
+[Here is a repo of useful `.gitignore` templates](https://github.com/github/gitignore)
