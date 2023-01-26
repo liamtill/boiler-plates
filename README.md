@@ -29,12 +29,13 @@ Current listing of compose files:
 * Paperless-ng
 * Portainer
 * Postgres
-* Synthing
+* Syncthing
 * Telegraf
     * For deploying to other servers
 * Uptime Kuma
 * Watchtower
 * PiHole
+* Adminer
 
 ## `scripts/`
 

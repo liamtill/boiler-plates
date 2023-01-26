@@ -30,18 +30,23 @@ version: "3.4"
 services:
   broker:
     image: redis:6.0
+    container_name: paperlessng-redis
     restart: unless-stopped
 
   db:
     image: postgres:13
+    container_name: paperlessng-db
     restart: unless-stopped
-    env_file: docker-compose.env
-    user: ${USERMAP_UID}:${USERMAP_GID}
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: paperless
     volumes:
       - ./pgdata:/var/lib/postgresql/data
 
   webserver:
     image: jonaswinkler/paperless-ng:latest
+    container_name: paperlessng
     restart: unless-stopped
     depends_on:
       - db
