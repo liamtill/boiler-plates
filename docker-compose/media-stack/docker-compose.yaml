@@ -12,6 +12,8 @@
 # Prowlarr - Indexer manager/proxy built on the popular arr .net/reactjs base stack
 # Bazarr - Companion application to Sonarr and Radarr to manage and download subtitles based on your requirements
 # Jellyseerr - Application for managing requests for your media library. It is a fork of Overseerr built to bring support for Jellyfin & Emby media servers
+# Readarr - Ebooks and Audiobooks - separate instances
+# Audiobookshelf - Audio book server and library
 #---
 
 # Guides
@@ -33,7 +35,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./sonarr/config:/config
-      - ${DATA_ROOT}:/data
+      - ${DATA_ROOT}:/data2
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -49,7 +51,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./radarr/config:/config
-      - ${DATA_ROOT}:/data
+      - ${DATA_ROOT}:/data2
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -63,7 +65,7 @@ services:
       - .env
     volumes:
       - ./nzbget/config:/config
-      - ${USENET_ROOT}:/data/usenet
+      - ${USENET_ROOT}:/data2/usenet
     ports:
       - 6789:6789
     restart: unless-stopped
@@ -105,7 +107,6 @@ services:
       - .env
     volumes:
       - ./bazarr/config:/config
-      - ${MEDIA_ROOT}:/data/media
     ports:
       - 6767:6767
     restart: unless-stopped
@@ -125,3 +126,46 @@ services:
       volumes:
           - ./jellyseerr/config:/app/config
       restart: unless-stopped
+
+  readarr-ebooks:
+    container_name: readarr-ebooks
+    image: cr.hotio.dev/hotio/readarr
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8787:8787"
+    environment:
+      - UMASK=002
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./readarr-ebooks/config:/config
+      - ${DATA_ROOT}:/data2
+
+  readarr-audiobooks:
+    container_name: readarr-audiobooks
+    image: cr.hotio.dev/hotio/readarr
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8788:8787"
+    environment:
+      - UMASK=002
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./readarr-audiobooks/config:/config
+      - ${DATA_ROOT}:/data2
+
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    restart: unless-stopped
+    ports:
+      - 8789:80
+    volumes:
+      - ${MEDIA_ROOT}/books/audiobooks:/audiobooks
+      - ${MEDIA_ROOT}/books/books:/books # experimental
+      # - </path/to/podcasts>:/podcasts
+      - ./audiobookshelf/config:/config
+      - ./audiobookshelf/metadata:/metadata

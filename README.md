@@ -2,6 +2,8 @@
 
 This repo contains boiler plate docker compose files and scripts as templates used for my homelab. These will be added to/modified over time as I add new services or modify existing ones. 
 
+I've moved away from this boiler-plate repo and now manage services and all config/template files [in my homelab repo](https://github.com/liamtill/homelab) using Ansible and Terraform.
+
 ## `docker-compose/`
 
 Current listing of compose files:
@@ -20,6 +22,8 @@ Current listing of compose files:
     * Prowlarr
     * Radarr
     * Sonarr
+    * Readarr (2 instances for ebooks and audiobooks)
+    * Audiobookshelf
 * Monitoring
     * Telegraf
     * InfluxDB
@@ -42,6 +46,8 @@ Current listing of compose files:
 Contains various custom sccripts used for monitoring, backups etc. Will be added to over time.
 
 * net_check.sh - Basic network ping check to restart interface if network down on device
+* docker-backup - Basic docker container data backup script
+* postgres_docker_backup - basic script to backup postgres data from docker container
 
 ## Usage
 
